@@ -1,0 +1,2 @@
+2012/12/13 23:51:20 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'atrium.fi' doesn't exist. The SQL statement executed was: SHOW COLUMNS FROM `fi`.
+in /var/www/atrium/atrium/index.php (13)

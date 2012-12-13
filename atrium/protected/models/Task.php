@@ -1,0 +1,106 @@
+<?php
+
+/**
+ * This is the model class for table "tasks".
+ *
+ * The followings are the available columns in table 'tasks':
+ * @property integer $task_id
+ * @property string $subject
+ * @property string $description
+ * @property integer $status_id
+ *
+ * The followings are the available model relations:
+ * @property TaskActions[] $taskActions
+ * @property Statuses $status
+ * @property Users[] $users
+ */
+class Task extends CActiveRecord
+{
+	/**
+	 * Returns the static model of the specified AR class.
+	 * @param string $className active record class name.
+	 * @return Task the static model class
+	 */
+	public static function model($className=__CLASS__)
+	{
+		return parent::model($className);
+	}
+
+	/**
+	 * @return string the associated database table name
+	 */
+	public function tableName()
+	{
+		return 'tasks';
+	}
+
+	/**
+	 * @return array validation rules for model attributes.
+	 */
+	public function rules()
+	{
+		// NOTE: you should only define rules for those attributes that
+		// will receive user inputs.
+		return array(
+			array('subject, description, status_id', 'required'),
+			array('status_id', 'numerical', 'integerOnly'=>true),
+			array('subject', 'length', 'max'=>255),
+			// The following rule is used by search().
+			// Please remove those attributes that should not be searched.
+			array('task_id, subject, description, status_id', 'safe', 'on'=>'search'),
+		);
+	}
+
+	/**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
+		return array(
+			'taskActions' => array(self::HAS_MANY, 'TaskAction', 'task_id'),
+			'status' => array(self::BELONGS_TO, 'Status', 'status_id',
+                'condition' => 'status.object='.Status::OBJECT_TASK,
+            ),
+			'comments' => array(self::BELONGS_TO, 'Comment', '',
+                'condition' => 'comments.object='.Comment::OBJECT_TASK,
+            ),
+			'users' => array(self::MANY_MANY, 'User', 'tasks_links(task_id, user_id)'),
+		);
+	}
+
+	/**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
+		return array(
+			'task_id' => 'Task',
+			'subject' => 'Subject',
+			'description' => 'Description',
+			'status_id' => 'Status',
+		);
+	}
+
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 */
+	public function search()
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+
+		$criteria->compare('task_id',$this->task_id);
+		$criteria->compare('subject',$this->subject,true);
+		$criteria->compare('description',$this->description,true);
+		$criteria->compare('status_id',$this->status_id);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+}
