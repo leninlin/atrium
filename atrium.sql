@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Дек 12 2012 г., 21:39
+-- Время создания: Дек 14 2012 г., 20:04
 -- Версия сервера: 5.1.63-0ubuntu0.11.04.1
 -- Версия PHP: 5.3.5-1ubuntu7.11
 
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `statuses` (
   `name` varchar(50) NOT NULL,
   `description` varchar(255) NOT NULL,
   `value` varchar(1) NOT NULL,
-  `object` varchar(10) NOT NULL,
+  `object` int(1) NOT NULL,
   PRIMARY KEY (`status_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -220,8 +220,8 @@ ALTER TABLE `finances`
 -- Ограничения внешнего ключа таблицы `privileges_links`
 --
 ALTER TABLE `privileges_links`
-  ADD CONSTRAINT `privileges_links_ibfk_2` FOREIGN KEY (`usergroup_id`) REFERENCES `usergroups` (`usergroup_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `privileges_links_ibfk_1` FOREIGN KEY (`privilege_id`) REFERENCES `privileges` (`privilege_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+  ADD CONSTRAINT `privileges_links_ibfk_1` FOREIGN KEY (`privilege_id`) REFERENCES `privileges` (`privilege_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `privileges_links_ibfk_2` FOREIGN KEY (`usergroup_id`) REFERENCES `usergroups` (`usergroup_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Ограничения внешнего ключа таблицы `projects`
@@ -233,8 +233,8 @@ ALTER TABLE `projects`
 -- Ограничения внешнего ключа таблицы `projects_links`
 --
 ALTER TABLE `projects_links`
-  ADD CONSTRAINT `projects_links_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `projects_links_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projects` (`project_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+  ADD CONSTRAINT `projects_links_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projects` (`project_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `projects_links_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Ограничения внешнего ключа таблицы `tasks`
@@ -246,8 +246,8 @@ ALTER TABLE `tasks`
 -- Ограничения внешнего ключа таблицы `tasks_links`
 --
 ALTER TABLE `tasks_links`
-  ADD CONSTRAINT `tasks_links_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `tasks_links_ibfk_1` FOREIGN KEY (`task_id`) REFERENCES `tasks` (`task_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+  ADD CONSTRAINT `tasks_links_ibfk_1` FOREIGN KEY (`task_id`) REFERENCES `tasks` (`task_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `tasks_links_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Ограничения внешнего ключа таблицы `task_actions`
@@ -259,8 +259,8 @@ ALTER TABLE `task_actions`
 -- Ограничения внешнего ключа таблицы `users`
 --
 ALTER TABLE `users`
-  ADD CONSTRAINT `users_ibfk_2` FOREIGN KEY (`usergroup_id`) REFERENCES `usergroups` (`usergroup_id`) ON UPDATE NO ACTION,
-  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON UPDATE NO ACTION;
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON UPDATE NO ACTION,
+  ADD CONSTRAINT `users_ibfk_2` FOREIGN KEY (`usergroup_id`) REFERENCES `usergroups` (`usergroup_id`) ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
