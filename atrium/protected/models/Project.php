@@ -63,8 +63,9 @@ class Project extends CActiveRecord
 			'status' => array(self::BELONGS_TO, 'Status', 'status_id',
                 'condition' => 'status.object='.Status::OBJECT_PROJECT,
             ),
-            'comments' => array(self::BELONGS_TO, 'Comment', '',
+            'comments' => array(self::HAS_MANY, 'Comment', 'project_id',
                 'condition' => 'comments.object='.Comment::OBJECT_PROJECT,
+                'through' => 'comments.object_id',
             ),
 			'users' => array(self::MANY_MANY, 'User', 'projects_links(project_id, user_id)'),
 		);

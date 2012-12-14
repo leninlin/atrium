@@ -57,8 +57,9 @@ class TaskAction extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'task' => array(self::BELONGS_TO, 'Task', 'task_id'),
-            'comments' => array(self::BELONGS_TO, 'Comment', '',
+            'comments' => array(self::HAS_MANY, 'Comment', 'action_id',
                 'condition' => 'comments.object='.Comment::OBJECT_TASK_ACTION,
+                'through' => 'comments.object_id',
             ),
 		);
 	}
