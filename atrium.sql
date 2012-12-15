@@ -192,6 +192,7 @@ CREATE TABLE IF NOT EXISTS `usergroups` (
 
 CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int(10) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `first_name` varchar(50) NOT NULL,

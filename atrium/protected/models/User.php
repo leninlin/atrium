@@ -23,6 +23,7 @@
  */
 class User extends CActiveRecord
 {
+    public $retry_password;
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -49,12 +50,15 @@ class User extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('email, password, first_name, second_name, last_name, birthday, phone, usergroup_id, job_id', 'required'),
-			array('birthday, phone, usergroup_id, job_id', 'numerical', 'integerOnly'=>true),
-			array('email, password, first_name, second_name, last_name', 'length', 'max'=>50),
+			array('username, email, password, retry_password, usergroup_id, job_id', 'required'),
+			array('password', 'compare', 'compareAttribute' => 'retry_password'),
+			array('birthday, phone, usergroup_id, job_id', 'numerical', 'integerOnly' => true),
+			array('username', 'length', 'min' => 3),
+			array('username, email, password, first_name, second_name, last_name', 'length', 'max' => 50),
+			array('email', 'email'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('user_id, email, password, first_name, second_name, last_name, birthday, phone, usergroup_id, job_id', 'safe', 'on'=>'search'),
+			array('user_id, username, email, password, first_name, second_name, last_name, birthday, phone, usergroup_id, job_id', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -80,8 +84,10 @@ class User extends CActiveRecord
 	{
 		return array(
 			'user_id' => 'User',
+			'username' => 'Username',
 			'email' => 'Email',
 			'password' => 'Password',
+			'retry_password' => 'Retry password',
 			'first_name' => 'First Name',
 			'second_name' => 'Second Name',
 			'last_name' => 'Last Name',
@@ -104,6 +110,7 @@ class User extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('user_id',$this->user_id);
+		$criteria->compare('username',$this->username,true);
 		$criteria->compare('email',$this->email,true);
 		$criteria->compare('password',$this->password,true);
 		$criteria->compare('first_name',$this->first_name,true);
@@ -118,4 +125,21 @@ class User extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+    protected function beforeSave()
+    {
+        if (parent::beforeSave()) {
+            if ($this->isNewRecord) {
+                $this->password = md5($this->password);
+            }
+
+            return true;
+        }
+        return false;
+    }
+
+    public function validatePassword($password)
+    {
+        return md5($password) === $this->password;
+    }
 }
